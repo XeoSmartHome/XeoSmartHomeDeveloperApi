@@ -1,9 +1,15 @@
 import datetime
+import hashlib
 
+from flask import current_app
 from flask_login import UserMixin
 from sqlalchemy.orm import validates, Query
 
 from Database.connection import db
+
+
+def hash_password(password: str) -> str:
+    return hashlib.md5((password + current_app.config['PASSWORD_SALT']).encode('utf-8')).hexdigest()
 
 
 class Developer(db.Model, UserMixin):
@@ -26,7 +32,7 @@ class Developer(db.Model, UserMixin):
         self.first_name = first_name
         self.last_name = last_name
         self.email_address = email_address
-        self.password_hash = password
+        self.password_hash = hash_password(password)
         self.phone_number = phone_number
         self.registered_on = datetime.datetime.now()
 
@@ -49,6 +55,9 @@ class Developer(db.Model, UserMixin):
     @validates('phone_number')
     def validate_phone_number(self, key, phone_number):
         return phone_number
+
+    def check_password(self, password: str) -> bool:
+        return self.password_hash == hash_password(password)
 
     def __repr__(self):
         return f'<id: {self.id},' \

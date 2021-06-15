@@ -20,12 +20,12 @@ def handle_login():
 
     developer = developers_repo.get_developer_by_email(email)
 
-    if developer.password_hash != password:
+    if not developer.check_password(password):
         return ''
 
     login_user(developer)
 
-    return 'ok'
+    return {'ok': 'ok'}
 
 
 @api.post('/create-account')

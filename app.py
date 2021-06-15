@@ -20,6 +20,8 @@ app.register_blueprint(api)
 def hello_world():
     return 'XeoSmartHome Developer API'
 
+# with app.app_context():
+#    db.create_all()
 
 if __name__ == '__main__':
     print('ok')
