@@ -1,16 +1,19 @@
-from sqlalchemy.orm import validates
+from sqlalchemy.orm import validates, Query
 
 from Database.connection import db
 
 
 class DeviceType(db.Model):
     __tablename__ = 'DEVICE_TYPE'
+    query: Query
 
     id = db.Column(db.Integer(), name='ID', primary_key=True, nullable=False, unique=True)
 
     name = db.Column(db.String(), name='NAME', nullable=False)
     description = db.Column(db.String(), name='DESCRIPTION', nullable=False)
     default_image = db.Column(db.String(), name='DEFAULT_IMAGE', nullable=False)
+
+    created_on = db.Column(db.String(), name='CREATED_ON', nullable=False)
 
     def __init__(self, name, description, default_image):
         self.name = name

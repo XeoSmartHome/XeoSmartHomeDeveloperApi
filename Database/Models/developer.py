@@ -1,13 +1,14 @@
 import datetime
 
 from flask_login import UserMixin
-from sqlalchemy.orm import validates
+from sqlalchemy.orm import validates, Query
 
 from Database.connection import db
 
 
 class Developer(db.Model, UserMixin):
     __tablename__ = 'DEVELOPER'
+    query: Query
 
     id = db.Column(db.Integer(), name='ID', primary_key=True, nullable=False, unique=True)
 
@@ -21,11 +22,11 @@ class Developer(db.Model, UserMixin):
 
     registered_on = db.Column(db.DateTime(), name='REGISTERED_ON', nullable=False)
 
-    def __init__(self, first_name, last_name, email_address, phone_number, id):
-        self.id = id
+    def __init__(self, first_name: str, last_name: str, email_address: str, password: str, phone_number: str):
         self.first_name = first_name
         self.last_name = last_name
         self.email_address = email_address
+        self.password_hash = password
         self.phone_number = phone_number
         self.registered_on = datetime.datetime.now()
 

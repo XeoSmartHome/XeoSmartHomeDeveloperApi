@@ -1,27 +1,26 @@
 from flask import Flask
 
 from API import api
+from Config.development_config import DevelopmentConfig
 from Database.Models.developer import Developer
 from Database.connection import db
 from login_manager import login_manager
 
 app = Flask(__name__)
 
+app.config.from_object(DevelopmentConfig)
 
 login_manager.init_app(app)
 db.init_app(app)
-
 
 app.register_blueprint(api)
 
 
 @app.route('/')
 def hello_world():
-    d1 = Developer('claudiu', 'neamtu', '@1', '123', 1)
-    d2 = d1
-    print(d2)
-    return 'Hello World!'
+    return 'XeoSmartHome Developer API'
 
 
 if __name__ == '__main__':
+    print('ok')
     app.run()
